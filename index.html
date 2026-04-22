@@ -12,7 +12,6 @@ body {
   margin:0;
   padding:20px;
 }
-
 .wrapper {
   max-width:900px;
   margin:auto;
@@ -21,8 +20,6 @@ body {
   border-radius:8px;
   box-shadow:0 6px 18px rgba(0,0,0,0.1);
 }
-
-/* Moderner Kopf */
 .header {
   border-bottom:3px solid #1f4ed8;
   padding-bottom:12px;
@@ -38,50 +35,26 @@ body {
   color:#555;
   font-size:14px;
 }
-
-label {
-  font-weight:bold;
-  display:block;
-  margin-top:16px;
-}
+label { font-weight:bold; display:block; margin-top:16px; }
 input {
   width:100%;
   padding:10px;
   margin-top:6px;
   border:1px solid #ccc;
   border-radius:5px;
-  font-size:15px;
 }
+.section { margin-top:26px; }
+.section h2 { font-size:17px; color:#1f4ed8; }
+.section p { font-size:14.5px; }
+hr { margin:30px 0; }
 
-.section {
-  margin-top:26px;
-}
-.section h2 {
-  font-size:17px;
-  color:#1f4ed8;
-  margin-bottom:6px;
-}
-.section p {
-  font-size:14.5px;
-  margin-top:0;
-}
-
-hr {
-  margin:30px 0;
-}
-
-.signature {
-  margin-top:22px;
-}
 .signature img {
   max-width:260px;
   display:block;
   margin-top:10px;
   border-bottom:1px solid #000;
-  padding-bottom:4px;
 }
 
-/* Unterschriftenfeld Kunde */
 canvas {
   width:100%;
   height:160px;
@@ -92,7 +65,7 @@ canvas {
 }
 
 .buttons {
-  margin-top:15px;
+  margin-top:12px;
   display:flex;
   gap:10px;
 }
@@ -106,15 +79,11 @@ button {
   border-radius:6px;
   cursor:pointer;
 }
-
-button.secondary {
-  background:#777;
-}
+button.secondary { background:#777; }
 </style>
 </head>
 
 <body>
-
 <div class="wrapper">
 
 <div class="header">
@@ -131,8 +100,7 @@ button.secondary {
 <div class="section">
 <h2>Grundlage</h2>
 <p>
-Durch den Einbau moderner, hochdichter Fenster in ein bestehendes Gebäude
-wird die Gebäudehülle nahezu luftdicht verschlossen.
+Durch den Einbau moderner, hochdichter Fenster wird die Gebäudehülle nahezu luftdicht verschlossen.
 Der bisherige unkontrollierte Luftaustausch entfällt.
 </p>
 </div>
@@ -140,11 +108,10 @@ Der bisherige unkontrollierte Luftaustausch entfällt.
 <div class="section">
 <h2>Aufklärung über Schimmelgefahr</h2>
 <p>
-Die im Innenraum entstehende Feuchtigkeit (z. B. Kochen, Duschen, Schlafen)
-muss aktiv durch regelmäßiges Lüften abgeführt werden.
+Die im Innenraum entstehende Feuchtigkeit muss aktiv durch regelmäßiges Lüften abgeführt werden.
 </p>
 <p>
-Unterbleibt dies, kann es an kühlen Bauteilen zu Schimmelbildung kommen.
+Unterbleibt dies, kann es zu Schimmelbildung an kühlen Bauteilen kommen.
 </p>
 </div>
 
@@ -159,15 +126,15 @@ Die Verantwortung liegt beim Bauherrn.
 <div class="section">
 <h2>Manuelle Lüftung</h2>
 <p>
-Ohne mechanische Lüftung muss 3–5 Mal täglich für 5–10 Minuten stoßgelüftet werden.
+Ohne mechanische Lüftung muss 3–5× täglich stoßgelüftet werden (5–10 Minuten).
 </p>
 </div>
 
 <div class="section">
 <h2>Haftungsausschluss</h2>
 <p>
-Der Fachunternehmer übernimmt keine Gewährleistung für Schäden,
-die durch unzureichendes Lüftungs‑ oder Heizverhalten entstehen.
+Der Fachunternehmer übernimmt keine Gewährleistung für Schäden durch unzureichendes Lüftungs‑
+oder Heizverhalten.
 </p>
 </div>
 
@@ -177,7 +144,7 @@ die durch unzureichendes Lüftungs‑ oder Heizverhalten entstehen.
 
 <div class="signature">
 <strong>Unterschrift Auftragnehmer</strong>
-<img src="images/unterschrift_auftragnehmer.jpg.jpg" alt="Unterschrift Auftragnehmer">
+images/unterschrift_auftragnehmer.jpg.jpg
 </div>
 
 <div class="signature">
@@ -212,6 +179,7 @@ function resizeCanvas() {
 resizeCanvas();
 
 let drawing = false;
+let hasSignature = false;
 
 function getPos(e) {
   const r = canvas.getBoundingClientRect();
@@ -223,11 +191,11 @@ function getPos(e) {
 
 function start(e) {
   drawing = true;
+  hasSignature = true;
   ctx.beginPath();
   const p = getPos(e);
   ctx.moveTo(p.x, p.y);
 }
-
 function draw(e) {
   if (!drawing) return;
   e.preventDefault();
@@ -235,10 +203,7 @@ function draw(e) {
   ctx.lineTo(p.x, p.y);
   ctx.stroke();
 }
-
-function stop() {
-  drawing = false;
-}
+function stop() { drawing = false; }
 
 canvas.addEventListener("mousedown", start);
 canvas.addEventListener("mousemove", draw);
@@ -248,13 +213,18 @@ canvas.addEventListener("touchstart", start);
 canvas.addEventListener("touchmove", draw);
 canvas.addEventListener("touchend", stop);
 
-// Unterschrift löschen
 function clearSignature() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  hasSignature = false;
 }
 
-// PDF Export
+// PDF Export mit Pflicht‑Unterschrift
 function exportPDF() {
+  if (!hasSignature) {
+    alert("Bitte unterschreiben Sie zuerst, bevor das PDF erstellt wird.");
+    return;
+  }
+
   const name = document.getElementById("kunde").value || "Kunde";
   document.title = "Feuchteschutz_und_" + name;
   window.print();
