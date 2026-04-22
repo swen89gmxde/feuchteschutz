@@ -2,100 +2,120 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Feuchteschutz und Lüftungsverhalten (DIN 1946-6)</title>
 
 <style>
+:root {
+  --primary: #1f4ed8;
+  --gray: #555;
+  --light: #f5f7fb;
+}
+
 body {
-  font-family: Arial, Helvetica, sans-serif;
-  margin: 30px;
-  line-height: 1.4;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: var(--light);
+  margin: 0;
+  padding: 20px;
 }
+
+.container {
+  max-width: 900px;
+  background: #fff;
+  margin: auto;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 5px 18px rgba(0,0,0,0.08);
+}
+
 h1 {
-  font-size: 22px;
+  color: var(--primary);
+  font-size: 24px;
+  margin-bottom: 5px;
 }
+
+.subtitle {
+  color: var(--gray);
+  margin-bottom: 25px;
+}
+
 label {
-  font-weight: bold;
+  font-weight: 600;
+  display: block;
+  margin-top: 15px;
 }
+
 input {
   width: 100%;
-  padding: 6px;
-  margin-bottom: 10px;
+  padding: 10px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 15px;
 }
+
+.section {
+  margin-top: 25px;
+}
+
+.section h2 {
+  font-size: 17px;
+  color: var(--primary);
+  margin-bottom: 8px;
+}
+
+.p {
+  font-size: 14.5px;
+  margin-bottom: 8px;
+}
+
+.sign-box {
+  margin-top: 25px;
+}
+
+.sign-title {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.signature-img {
+  max-width: 260px;
+  margin-top: 10px;
+}
+
 canvas {
-  border: 1px solid #000;
   width: 100%;
-  height: 150px;
+  height: 160px;
+  border: 1px solid #333;
+  border-radius: 4px;
 }
-.button {
-  margin-top: 15px;
-  padding: 10px 16px;
+
+.footer {
+  margin-top: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+button {
+  padding: 12px 20px;
   font-size: 16px;
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
 }
+
+button:hover {
+  background: #173bb1;
+}
+
 hr {
-  margin: 25px 0;
-}
-.small {
-  font-size: 13px;
+  margin: 30px 0;
 }
 </style>
 </head>
 
 <body>
 
-<h1>Verbindlicher Hinweis zum Feuchteschutz und Lüftungsverhalten<br>(DIN 1946‑6)</h1>
-
-<label>Kunde / Eigentümer</label>
-<input id="kunde" placeholder="Name des Bauherrn">
-
-<label>Objektadresse</label>
-<input placeholder="Straße, PLZ, Ort">
-
-<p class="small">
-Durch den Einbau moderner, hochdichter Fenster in ein bestehendes Gebäude wird die Gebäudehülle nahezu luftdicht verschlossen.
-Der bisherige unkontrollierte Luftaustausch entfällt.
-</p>
-
-<p><b>Der Auftraggeber bestätigt mit seiner Unterschrift folgende Punkte:</b></p>
-
-<p><b>Aufklärung über Schimmelgefahr:</b><br>
-Ich wurde ausdrücklich darüber informiert, dass feuchte Raumluft regelmäßig durch Lüften abgeführt werden muss.
-</p>
-
-<p><b>Verpflichtung zum Lüftungskonzept (DIN 1946‑6):</b><br>
-Bei Austausch von mehr als 1/3 der Fensterflächen ist ein Lüftungskonzept erforderlich.
-</p>
-
-<p><b>Manuelle Lüftung:</b><br>
-Sofern keine Lüftungstechnik vorhanden ist, muss der Feuchteschutz durch Stoßlüften (3–5× täglich) erfolgen.
-</p>
-
-<p><b>Haftungsausschluss:</b><br>
-Der Fachunternehmer übernimmt keine Gewährleistung für Schäden durch falsches Lüftungs‑ oder Heizverhalten.
-</p>
-
-<hr>
-
-<p><b>Ort, Datum:</b> <span id="datum"></span></p>
-
-<p><b>Unterschrift Auftragnehmer:</b></p>
-<canvas></canvas>
-
-<p><b>Unterschrift Auftraggeber:</b></p>
-<canvas></canvas>
-
-<button class="button" onclick="exportPDF()">Als PDF speichern</button>
-
-<script>
-document.getElementById("datum").innerText =
-  new Date().toLocaleDateString("de-DE");
-
-// einfache PDF-Erzeugung (Browser-Druckdialog)
-function exportPDF() {
-  const name = document.getElementById("kunde").value || "Kunde";
-  document.title = "Feuchteschutz_und_" + name;
-  window.print();
-}
-</script>
-
-</body>
-</html>
