@@ -3,233 +3,895 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Feuchteschutz</title>
+<title>Hinweisprotokoll Feuchteschutz und Lüftung</title>
+
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
 
 <style>
-body {
-  font-family: Arial, Helvetica, sans-serif;
-  background:#f4f6fa;
-  margin:0;
-  padding:20px;
+:root {
+  --primary: #1f2937;
+  --accent: #1f4ed8;
+  --accent-dark: #173bb0;
+  --muted: #6b7280;
+  --bg: #f4f6fa;
+  --card: #ffffff;
+  --border: #d1d5db;
+  --soft: #eef2ff;
+  --danger: #991b1b;
 }
-.wrapper {
-  max-width:900px;
-  margin:auto;
-  background:#ffffff;
-  padding:32px;
-  border-radius:8px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.1);
-}
-.header {
-  border-bottom:3px solid #1f4ed8;
-  padding-bottom:12px;
-  margin-bottom:28px;
-}
-.header h1 {
-  margin:0;
-  font-size:26px;
-  color:#1f4ed8;
-}
-.header p {
-  margin:5px 0 0 0;
-  color:#555;
-  font-size:14px;
-}
-label { font-weight:bold; display:block; margin-top:16px; }
-input {
-  width:100%;
-  padding:10px;
-  margin-top:6px;
-  border:1px solid #ccc;
-  border-radius:5px;
-}
-.section { margin-top:26px; }
-.section h2 { font-size:17px; color:#1f4ed8; }
-.section p { font-size:14.5px; }
-hr { margin:30px 0; }
 
-.signature img {
-  max-width:260px;
-  display:block;
-  margin-top:10px;
-  border-bottom:1px solid #000;
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  background: var(--bg);
+  margin: 0;
+  padding: 20px;
+  color: var(--primary);
+}
+
+.wrapper {
+  max-width: 900px;
+  margin: auto;
+  background: var(--card);
+  padding: 30px;
+  border-radius: 14px;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.10);
+}
+
+.header {
+  border-bottom: 3px solid var(--accent);
+  padding-bottom: 16px;
+  margin-bottom: 24px;
+}
+
+.header h1 {
+  margin: 0;
+  font-size: 27px;
+  color: var(--accent);
+}
+
+.header p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.info-box {
+  background: var(--soft);
+  border-left: 4px solid var(--accent);
+  padding: 14px 16px;
+  border-radius: 10px;
+  margin: 20px 0;
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+label {
+  font-weight: 700;
+  display: block;
+  margin-top: 16px;
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 11px;
+  margin-top: 6px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 16px;
+  background: white;
+}
+
+textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.section {
+  margin-top: 28px;
+  padding-top: 4px;
+}
+
+.section h2 {
+  font-size: 18px;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+
+.section p {
+  font-size: 15px;
+  line-height: 1.58;
+  margin: 8px 0;
+}
+
+.check-area {
+  margin-top: 16px;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.check-row, .radio-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin: 11px 0;
+  font-size: 14.5px;
+  line-height: 1.45;
+}
+
+.check-row input, .radio-row input {
+  width: auto;
+  margin-top: 3px;
+}
+
+.signature-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-top: 18px;
+}
+
+.signature-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px;
+  background: #fff;
+}
+
+.signature-card strong {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.signature-card img {
+  max-width: 100%;
+  max-height: 120px;
+  display: block;
+  margin-top: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #111827;
+}
+
+.canvas-wrap {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: white;
 }
 
 canvas {
-  width:100%;
-  height:160px;
-  border:1px solid #000;
-  border-radius:4px;
-  margin-top:10px;
-  touch-action:none;
+  display: block;
+  width: 100%;
+  height: 180px;
+  background: white;
+  touch-action: none;
+}
+
+.signature-hint {
+  font-size: 13px;
+  color: var(--muted);
+  padding: 8px 10px;
+  border-top: 1px solid #e5e7eb;
 }
 
 .buttons {
-  margin-top:12px;
-  display:flex;
-  gap:10px;
+  margin-top: 18px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
 }
 
 button {
-  padding:12px 18px;
-  font-size:15px;
-  background:#1f4ed8;
-  color:#fff;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
+  padding: 13px 18px;
+  font-size: 15px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  font-weight: 700;
 }
-button.secondary { background:#777; }
+
+button:hover {
+  background: var(--accent-dark);
+}
+
+button.secondary {
+  background: #6b7280;
+}
+
+button.secondary:hover {
+  background: #4b5563;
+}
+
+button.full {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.warning {
+  color: var(--danger);
+  font-size: 13.5px;
+  line-height: 1.45;
+  margin-top: 10px;
+}
+
+.footer-note {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 24px;
+  line-height: 1.45;
+}
+
+@media (max-width: 720px) {
+  body {
+    padding: 12px;
+  }
+
+  .wrapper {
+    padding: 20px;
+  }
+
+  .grid,
+  .signature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header h1 {
+    font-size: 23px;
+  }
+
+  button {
+    width: 100%;
+  }
+}
+
+@media print {
+  body {
+    background: white;
+    padding: 0;
+  }
+
+  .wrapper {
+    box-shadow: none;
+    border-radius: 0;
+    max-width: none;
+  }
+
+  button {
+    display: none;
+  }
+}
 </style>
 </head>
 
 <body>
 <div class="wrapper">
 
-<div class="header">
-  <h1>Feuchteschutz & Lüftungsverhalten</h1>
-  <p>Verbindlicher Hinweis gemäß DIN 1946‑6</p>
-</div>
+  <div class="header">
+    <h1>Hinweisprotokoll Feuchteschutz & Lüftung</h1>
+    <p>Hinweis zur Erforderlichkeit eines Lüftungskonzepts nach DIN 1946-6 bei Fenstertausch</p>
+  </div>
 
-<label>Kunde / Eigentümer</label>
-<input id="kunde" placeholder="Name des Bauherrn">
+  <div class="info-box">
+    Dieses Protokoll dokumentiert die Aufklärung des Auftraggebers / Eigentümers über Feuchteschutz,
+    Lüftungsverhalten und die mögliche beziehungsweise erforderliche Erstellung eines Lüftungskonzepts
+    nach DIN 1946-6. Es ersetzt kein vollständiges Lüftungskonzept und keine Fachplanung.
+  </div>
 
-<label>Objektadresse</label>
-<input placeholder="Straße, PLZ, Ort">
+  <div class="grid">
+    <div>
+      <label for="kunde">Kunde / Eigentümer</label>
+      <input id="kunde" placeholder="Name des Bauherrn / Eigentümers" autocomplete="name">
+    </div>
 
-<div class="section">
-<h2>Grundlage</h2>
-<p>
-Durch den Einbau moderner, hochdichter Fenster wird die Gebäudehülle nahezu luftdicht verschlossen.
-Der bisherige unkontrollierte Luftaustausch entfällt.
-</p>
-</div>
+    <div>
+      <label for="firma">Auftragnehmer</label>
+      <input id="firma" value="Sichtwerk – Neubauer">
+    </div>
+  </div>
 
-<div class="section">
-<h2>Aufklärung über Schimmelgefahr</h2>
-<p>
-Die im Innenraum entstehende Feuchtigkeit muss aktiv durch regelmäßiges Lüften abgeführt werden.
-</p>
-<p>
-Unterbleibt dies, kann es zu Schimmelbildung an kühlen Bauteilen kommen.
-</p>
-</div>
+  <label for="objektadresse">Objektadresse</label>
+  <input id="objektadresse" placeholder="Straße, Hausnummer, PLZ, Ort">
 
-<div class="section">
-<h2>Lüftungskonzept (DIN 1946‑6)</h2>
-<p>
-Bei Austausch von mehr als 1/3 der Fensterflächen ist ein Lüftungskonzept erforderlich.
-Die Verantwortung liegt beim Bauherrn.
-</p>
-</div>
+  <div class="grid">
+    <div>
+      <label for="ort">Ort der Unterzeichnung</label>
+      <input id="ort" placeholder="Ort">
+    </div>
 
-<div class="section">
-<h2>Manuelle Lüftung</h2>
-<p>
-Ohne mechanische Lüftung muss 3–5× täglich stoßgelüftet werden (5–10 Minuten).
-</p>
-</div>
+    <div>
+      <label for="datumInput">Datum</label>
+      <input type="date" id="datumInput">
+    </div>
+  </div>
 
-<div class="section">
-<h2>Haftungsausschluss</h2>
-<p>
-Der Fachunternehmer übernimmt keine Gewährleistung für Schäden durch unzureichendes Lüftungs‑
-oder Heizverhalten.
-</p>
-</div>
+  <div class="grid">
+    <div>
+      <label for="umfang">Umfang der Maßnahme</label>
+      <select id="umfang">
+        <option value="Austausch von mehr als 1/3 der Fensterflächen">Austausch von mehr als 1/3 der Fensterflächen</option>
+        <option value="Austausch von bis zu 1/3 der Fensterflächen">Austausch von bis zu 1/3 der Fensterflächen</option>
+        <option value="Umfang noch zu prüfen">Umfang noch zu prüfen</option>
+      </select>
+    </div>
 
-<hr>
+    <div>
+      <label for="projekt">Projekt / Angebot Nr. optional</label>
+      <input id="projekt" placeholder="z. B. Angebotsnummer">
+    </div>
+  </div>
 
-<p><strong>Ort, Datum:</strong> <span id="datum"></span></p>
+  <div class="section">
+    <h2>1. Grundlage des Hinweises</h2>
+    <p>
+      Durch den Einbau moderner, dichter Fenster kann sich der natürliche Luftaustausch des Gebäudes
+      deutlich verringern. Feuchtigkeit, die durch Wohnen, Kochen, Duschen, Pflanzen, Wäsche oder andere
+      Nutzungen entsteht, muss weiterhin sicher abgeführt werden.
+    </p>
+    <p>
+      Bei einem Austausch von mehr als einem Drittel der Fensterflächen ist nach DIN 1946-6 ein
+      Lüftungskonzept zu erstellen. Das Lüftungskonzept prüft insbesondere, ob der notwendige
+      Luftwechsel zum Feuchteschutz allein durch vorhandene Undichtigkeiten und manuelle Lüftung
+      erreicht werden kann oder ob lüftungstechnische Maßnahmen erforderlich sind.
+    </p>
+  </div>
 
+  <div class="section">
+    <h2>2. Aufklärung über Feuchtigkeit und Schimmelgefahr</h2>
+    <p>
+      Der Auftraggeber / Eigentümer wurde darauf hingewiesen, dass unzureichendes Lüften und Heizen
+      zu erhöhter Luftfeuchtigkeit, Kondensatbildung an kühlen Bauteilen und in der Folge zu
+      Schimmelbildung oder Feuchteschäden führen kann.
+    </p>
+    <p>
+      Eine rein manuelle Fensterlüftung kann abhängig von Gebäude, Nutzung, Raumaufteilung und
+      Bewohnerverhalten nicht immer ausreichen, um den nutzerunabhängigen Mindestluftwechsel zum
+      Feuchteschutz sicherzustellen.
+    </p>
+  </div>
 
-<div class="signature">
-<strong>Unterschrift Auftragnehmer</strong>
-<img src="images/unterschrift_auftragnehmer.jpg.jpg" alt="Unterschrift Auftragnehmer">
-</div>
+  <div class="section">
+    <h2>3. Lüftungskonzept nach DIN 1946-6</h2>
+    <p>
+      Der Auftraggeber / Eigentümer wurde ausdrücklich darauf hingewiesen, dass bei Austausch von mehr
+      als einem Drittel der Fensterflächen ein Lüftungskonzept nach DIN 1946-6 erforderlich ist.
+      Die Erstellung eines solchen Lüftungskonzepts ist nur Bestandteil des Auftrags, wenn sie gesondert
+      schriftlich vereinbart und beauftragt wurde.
+    </p>
+    <p>
+      Wird kein Lüftungskonzept beauftragt oder vorgelegt, erfolgt die Fenstermontage auf Grundlage
+      der beauftragten Fensterleistung. Die Verantwortung für die Beauftragung, Bereitstellung und
+      Umsetzung eines erforderlichen Lüftungskonzepts verbleibt beim Auftraggeber / Eigentümer,
+      soweit keine abweichende schriftliche Vereinbarung getroffen wurde.
+    </p>
+  </div>
 
+  <div class="section">
+    <h2>4. Manuelles Lüftungs- und Heizverhalten</h2>
+    <p>
+      Sofern kein geeignetes Lüftungssystem vorhanden ist, muss der Auftraggeber / Nutzer durch
+      angepasstes Lüftungs- und Heizverhalten aktiv zur Feuchteabfuhr beitragen. Dazu gehört
+      insbesondere regelmäßiges Stoßlüften, ausreichendes Heizen und die Kontrolle erhöhter
+      Raumluftfeuchtigkeit.
+    </p>
+    <p>
+      Eine pauschale Lüftungsempfehlung ersetzt keine objektbezogene Berechnung. Häufig wird mehrmals
+      tägliches Stoßlüften für mehrere Minuten erforderlich sein; die konkrete Erforderlichkeit hängt
+      jedoch von Gebäude, Nutzung und Witterung ab.
+    </p>
+  </div>
 
-<div class="signature">
-<strong>Unterschrift Auftraggeber</strong>
-<canvas id="sign"></canvas>
+  <div class="section">
+    <h2>5. Abgrenzung der Verantwortung</h2>
+    <p>
+      Der Auftragnehmer haftet weiterhin für die ordnungsgemäße Ausführung der von ihm beauftragten
+      Leistungen. Für Schäden, die ausschließlich auf ein nicht beauftragtes, nicht vorgelegtes oder
+      nicht umgesetztes Lüftungskonzept sowie auf unzureichendes Lüftungs- oder Heizverhalten des
+      Nutzers zurückzuführen sind, übernimmt der Auftragnehmer keine Verantwortung.
+    </p>
+  </div>
 
-<div class="buttons">
-  <button class="secondary" onclick="clearSignature()">Unterschrift löschen</button>
-</div>
-</div>
+  <div class="section">
+    <h2>6. Bestätigung durch den Auftraggeber / Eigentümer</h2>
 
-<div class="buttons" style="margin-top:30px">
-  <button onclick="exportPDF()">Als PDF speichern</button>
-</div>
+    <div class="check-area">
+      <label class="check-row">
+        <input type="checkbox" id="checkHinweis">
+        <span>Ich bestätige, dass ich über Feuchteschutz, Schimmelgefahr und die Auswirkungen dichter neuer Fenster informiert wurde.</span>
+      </label>
+
+      <label class="check-row">
+        <input type="checkbox" id="checkDrittel">
+        <span>Ich wurde darauf hingewiesen, dass bei Austausch von mehr als 1/3 der Fensterflächen ein Lüftungskonzept nach DIN 1946-6 erforderlich ist.</span>
+      </label>
+
+      <label class="check-row">
+        <input type="checkbox" id="checkKeinErsatz">
+        <span>Mir ist bekannt, dass dieses Hinweisprotokoll kein vollständiges Lüftungskonzept und keine Fachplanung ersetzt.</span>
+      </label>
+    </div>
+
+    <div class="check-area">
+      <strong>Erklärung zum Lüftungskonzept:</strong>
+
+      <label class="radio-row">
+        <input type="radio" name="konzept" value="Das Lüftungskonzept wird beim Auftragnehmer gesondert angefragt / beauftragt.">
+        <span>Das Lüftungskonzept wird beim Auftragnehmer gesondert angefragt / beauftragt.</span>
+      </label>
+
+      <label class="radio-row">
+        <input type="radio" name="konzept" value="Ein Lüftungskonzept liegt bereits vor oder wurde durch den Auftraggeber anderweitig beauftragt.">
+        <span>Ein Lüftungskonzept liegt bereits vor oder wurde durch den Auftraggeber anderweitig beauftragt.</span>
+      </label>
+
+      <label class="radio-row">
+        <input type="radio" name="konzept" value="Der Auftraggeber beauftragt das Lüftungskonzept eigenverantwortlich anderweitig.">
+        <span>Der Auftraggeber beauftragt das Lüftungskonzept eigenverantwortlich anderweitig.</span>
+      </label>
+
+      <label class="radio-row">
+        <input type="radio" name="konzept" value="Der Auftraggeber wünscht trotz Hinweis derzeit keine gesonderte Beauftragung eines Lüftungskonzepts.">
+        <span>Der Auftraggeber wünscht trotz Hinweis derzeit keine gesonderte Beauftragung eines Lüftungskonzepts.</span>
+      </label>
+    </div>
+
+    <label for="bemerkungen">Bemerkungen optional</label>
+    <textarea id="bemerkungen" placeholder="z. B. Anzahl Fenster, Besonderheiten, Hinweis auf bereits vorhandene Lüftung, Kundenwunsch"></textarea>
+  </div>
+
+  <div class="section">
+    <h2>7. Unterschriften</h2>
+
+    <div class="signature-grid">
+      <div class="signature-card">
+        <strong>Unterschrift Auftragnehmer</strong>
+        <img id="auftragnehmerSignatur" src="images/unterschrift_auftragnehmer.jpg.jpg" alt="Unterschrift Auftragnehmer">
+        <p class="footer-note">
+          Falls das Bild nicht angezeigt wird: Dateipfad prüfen. Empfohlen: images/unterschrift_auftragnehmer.jpg
+        </p>
+      </div>
+
+      <div class="signature-card">
+        <strong>Unterschrift Auftraggeber / Eigentümer</strong>
+        <div class="canvas-wrap">
+          <canvas id="sign"></canvas>
+          <div class="signature-hint">Bitte im weißen Feld unterschreiben.</div>
+        </div>
+
+        <div class="buttons">
+          <button type="button" class="secondary" onclick="clearSignature()">Unterschrift löschen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="buttons" style="margin-top:30px">
+    <button type="button" class="full" onclick="exportPDF()">PDF erstellen</button>
+  </div>
+
+  <p class="footer-note">
+    Hinweis: Diese Vorlage dient der Dokumentation der Aufklärung. Sie ersetzt keine individuelle Rechtsberatung
+    und keine objektbezogene Fachplanung / Berechnung nach DIN 1946-6.
+  </p>
 
 </div>
 
 <script>
-document.getElementById("datum").innerText =
-  new Date().toLocaleDateString("de-DE");
+const AUFTRAGNEHMER_SIGNATURE_SRC = "images/unterschrift_auftragnehmer.jpg.jpg";
 
-// Canvas Setup
 const canvas = document.getElementById("sign");
-const ctx = canvas.getContext("2d");
+const datumInput = document.getElementById("datumInput");
+let signaturePad;
 
-function resizeCanvas() {
-  canvas.width = canvas.offsetWidth;
-  canvas.height = 160;
-  ctx.lineWidth = 2;
-  ctx.lineCap = "round";
-}
-resizeCanvas();
+datumInput.value = new Date().toISOString().split("T")[0];
 
-let drawing = false;
-let hasSignature = false;
-
-function getPos(e) {
-  const r = canvas.getBoundingClientRect();
-  return {
-    x: (e.touches ? e.touches[0].clientX : e.clientX) - r.left,
-    y: (e.touches ? e.touches[0].clientY : e.clientY) - r.top
-  };
+function formatDateGerman(dateValue) {
+  if (!dateValue) return "";
+  const [year, month, day] = dateValue.split("-");
+  return `${day}.${month}.${year}`;
 }
 
-function start(e) {
-  drawing = true;
-  hasSignature = true;
-  ctx.beginPath();
-  const p = getPos(e);
-  ctx.moveTo(p.x, p.y);
-}
-function draw(e) {
-  if (!drawing) return;
-  e.preventDefault();
-  const p = getPos(e);
-  ctx.lineTo(p.x, p.y);
-  ctx.stroke();
-}
-function stop() { drawing = false; }
+function resizeSignatureCanvas() {
+  const ratio = Math.max(window.devicePixelRatio || 1, 1);
+  const rect = canvas.getBoundingClientRect();
 
-canvas.addEventListener("mousedown", start);
-canvas.addEventListener("mousemove", draw);
-canvas.addEventListener("mouseup", stop);
-canvas.addEventListener("mouseleave", stop);
-canvas.addEventListener("touchstart", start);
-canvas.addEventListener("touchmove", draw);
-canvas.addEventListener("touchend", stop);
+  canvas.width = Math.round(rect.width * ratio);
+  canvas.height = Math.round(rect.height * ratio);
+
+  const ctx = canvas.getContext("2d");
+  ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+  if (signaturePad) {
+    signaturePad.clear();
+  }
+}
+
+function initSignature() {
+  resizeSignatureCanvas();
+
+  signaturePad = new SignaturePad(canvas, {
+    backgroundColor: "rgb(255,255,255)",
+    penColor: "rgb(17,24,39)",
+    minWidth: 0.8,
+    maxWidth: 2.4,
+    throttle: 16
+  });
+
+  canvas.addEventListener("touchstart", function(e) {
+    e.preventDefault();
+  }, { passive: false });
+
+  canvas.addEventListener("touchmove", function(e) {
+    e.preventDefault();
+  }, { passive: false });
+}
 
 function clearSignature() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  hasSignature = false;
+  if (signaturePad) {
+    signaturePad.clear();
+  }
 }
 
-// PDF Export mit Pflicht‑Unterschrift
-function exportPDF() {
-  if (!hasSignature) {
-    alert("Bitte unterschreiben Sie zuerst, bevor das PDF erstellt wird.");
+let resizeTimer;
+window.addEventListener("resize", function() {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(resizeSignatureCanvas, 250);
+});
+
+window.addEventListener("load", initSignature);
+
+function getValue(id) {
+  return document.getElementById(id).value.trim();
+}
+
+function isChecked(id) {
+  return document.getElementById(id).checked;
+}
+
+function getSelectedKonzept() {
+  const selected = document.querySelector('input[name="konzept"]:checked');
+  return selected ? selected.value : "";
+}
+
+function cleanPdfText(text) {
+  return String(text || "")
+    .replace(/–/g, "-")
+    .replace(/-/g, "-")
+    .replace(/“|”/g, '"')
+    .replace(/’/g, "'")
+    .replace(/\u00A0/g, " ");
+}
+
+function safeFileName(value) {
+  return String(value || "Kunde")
+    .trim()
+    .replace(/[^\wäöüÄÖÜß-]+/g, "_")
+    .replace(/_+/g, "_")
+    .replace(/^_|_$/g, "");
+}
+
+function imageToDataURL(src) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+
+    img.onload = function() {
+      try {
+        const tempCanvas = document.createElement("canvas");
+        tempCanvas.width = img.naturalWidth;
+        tempCanvas.height = img.naturalHeight;
+        const ctx = tempCanvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        resolve(tempCanvas.toDataURL("image/jpeg", 0.92));
+      } catch (e) {
+        resolve(null);
+      }
+    };
+
+    img.onerror = function() {
+      resolve(null);
+    };
+
+    img.src = src;
+  });
+}
+
+function addHeader(pdf, pageNumber) {
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(13);
+  pdf.setTextColor(31, 78, 216);
+  pdf.text("Hinweisprotokoll Feuchteschutz & Lüftung", 18, 16);
+
+  pdf.setFont("helvetica", "normal");
+  pdf.setFontSize(8);
+  pdf.setTextColor(100);
+  pdf.text("Seite " + pageNumber, 190, 16, { align: "right" });
+
+  pdf.setDrawColor(31, 78, 216);
+  pdf.line(18, 20, 192, 20);
+
+  pdf.setTextColor(31, 41, 55);
+}
+
+function addPageIfNeeded(pdf, y, neededSpace) {
+  if (y + neededSpace > 276) {
+    pdf.addPage();
+    addHeader(pdf, pdf.getNumberOfPages());
+    return 32;
+  }
+  return y;
+}
+
+function addTitle(pdf, text, y) {
+  y = addPageIfNeeded(pdf, y, 14);
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(12);
+  pdf.setTextColor(31, 78, 216);
+  pdf.text(cleanPdfText(text), 18, y);
+  pdf.setTextColor(31, 41, 55);
+  return y + 7;
+}
+
+function addParagraph(pdf, text, y, options = {}) {
+  const x = options.x || 18;
+  const width = options.width || 174;
+  const fontSize = options.fontSize || 10;
+  const lineHeight = options.lineHeight || 5;
+
+  pdf.setFont("helvetica", options.bold ? "bold" : "normal");
+  pdf.setFontSize(fontSize);
+
+  const lines = pdf.splitTextToSize(cleanPdfText(text), width);
+  y = addPageIfNeeded(pdf, y, lines.length * lineHeight + 4);
+  pdf.text(lines, x, y);
+
+  return y + lines.length * lineHeight + 3;
+}
+
+function addField(pdf, label, value, y) {
+  y = addPageIfNeeded(pdf, y, 8);
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(10);
+  pdf.text(cleanPdfText(label + ":"), 18, y);
+
+  pdf.setFont("helvetica", "normal");
+  pdf.text(cleanPdfText(value || "-"), 62, y);
+
+  return y + 7;
+}
+
+function addCheckboxLine(pdf, checked, text, y) {
+  y = addPageIfNeeded(pdf, y, 10);
+  pdf.setDrawColor(80);
+  pdf.rect(18, y - 3.5, 4, 4);
+
+  if (checked) {
+    pdf.setFont("helvetica", "bold");
+    pdf.setFontSize(9);
+    pdf.text("X", 19, y);
+  }
+
+  pdf.setFont("helvetica", "normal");
+  pdf.setFontSize(9.5);
+  const lines = pdf.splitTextToSize(cleanPdfText(text), 165);
+  pdf.text(lines, 26, y);
+
+  return y + Math.max(7, lines.length * 4.8);
+}
+
+async function exportPDF() {
+  const kunde = getValue("kunde");
+  const firma = getValue("firma") || "Sichtwerk - Neubauer";
+  const objektadresse = getValue("objektadresse");
+  const ort = getValue("ort");
+  const datum = datumInput.value;
+  const umfang = getValue("umfang");
+  const projekt = getValue("projekt");
+  const bemerkungen = getValue("bemerkungen");
+  const konzept = getSelectedKonzept();
+
+  if (!kunde) {
+    alert("Bitte Kunde / Eigentümer eintragen.");
     return;
   }
 
-  const name = document.getElementById("kunde").value || "Kunde";
-  document.title = "Feuchteschutz_und_" + name;
-  window.print();
+  if (!objektadresse) {
+    alert("Bitte Objektadresse eintragen.");
+    return;
+  }
+
+  if (!ort) {
+    alert("Bitte Ort der Unterzeichnung eintragen.");
+    return;
+  }
+
+  if (!datum) {
+    alert("Bitte Datum eintragen.");
+    return;
+  }
+
+  if (!isChecked("checkHinweis") || !isChecked("checkDrittel") || !isChecked("checkKeinErsatz")) {
+    alert("Bitte alle drei Bestätigungsfelder anhaken.");
+    return;
+  }
+
+  if (!konzept) {
+    alert("Bitte eine Erklärung zum Lüftungskonzept auswählen.");
+    return;
+  }
+
+  if (!signaturePad || signaturePad.isEmpty()) {
+    alert("Bitte Auftraggeber / Eigentümer unterschreiben lassen.");
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const pdf = new jsPDF({
+    orientation: "portrait",
+    unit: "mm",
+    format: "a4"
+  });
+
+  pdf.setProperties({
+    title: "Hinweisprotokoll Feuchteschutz und Lüftung",
+    subject: "Hinweis zur DIN 1946-6 bei Fenstertausch",
+    author: firma
+  });
+
+  addHeader(pdf, 1);
+
+  let y = 32;
+
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(16);
+  pdf.setTextColor(31, 78, 216);
+  pdf.text("Hinweisprotokoll Feuchteschutz & Lüftung", 105, y, { align: "center" });
+  y += 8;
+
+  pdf.setFont("helvetica", "normal");
+  pdf.setFontSize(10);
+  pdf.setTextColor(31, 41, 55);
+  pdf.text("Hinweis zur Erforderlichkeit eines Lüftungskonzepts nach DIN 1946-6", 105, y, { align: "center" });
+  y += 12;
+
+  y = addTitle(pdf, "Angaben zum Objekt", y);
+  y = addField(pdf, "Kunde / Eigentümer", kunde, y);
+  y = addField(pdf, "Auftragnehmer", firma, y);
+  y = addField(pdf, "Objektadresse", objektadresse, y);
+  y = addField(pdf, "Ort / Datum", ort + ", " + formatDateGerman(datum), y);
+  y = addField(pdf, "Umfang der Maßnahme", umfang, y);
+
+  if (projekt) {
+    y = addField(pdf, "Projekt / Angebot", projekt, y);
+  }
+
+  y += 4;
+
+  y = addTitle(pdf, "1. Grundlage des Hinweises", y);
+  y = addParagraph(pdf,
+    "Durch den Einbau moderner, dichter Fenster kann sich der natürliche Luftaustausch des Gebäudes deutlich verringern. Feuchtigkeit, die durch Wohnen, Kochen, Duschen, Pflanzen, Wäsche oder andere Nutzungen entsteht, muss weiterhin sicher abgeführt werden.",
+    y
+  );
+  y = addParagraph(pdf,
+    "Bei einem Austausch von mehr als einem Drittel der Fensterflächen ist nach DIN 1946-6 ein Lüftungskonzept zu erstellen. Das Lüftungskonzept prüft insbesondere, ob der notwendige Luftwechsel zum Feuchteschutz allein durch vorhandene Undichtigkeiten und manuelle Lüftung erreicht werden kann oder ob lüftungstechnische Maßnahmen erforderlich sind.",
+    y
+  );
+
+  y = addTitle(pdf, "2. Aufklärung über Feuchtigkeit und Schimmelgefahr", y);
+  y = addParagraph(pdf,
+    "Der Auftraggeber / Eigentümer wurde darauf hingewiesen, dass unzureichendes Lüften und Heizen zu erhöhter Luftfeuchtigkeit, Kondensatbildung an kühlen Bauteilen und in der Folge zu Schimmelbildung oder Feuchteschäden führen kann.",
+    y
+  );
+  y = addParagraph(pdf,
+    "Eine rein manuelle Fensterlüftung kann abhängig von Gebäude, Nutzung, Raumaufteilung und Bewohnerverhalten nicht immer ausreichen, um den nutzerunabhängigen Mindestluftwechsel zum Feuchteschutz sicherzustellen.",
+    y
+  );
+
+  y = addTitle(pdf, "3. Lüftungskonzept nach DIN 1946-6", y);
+  y = addParagraph(pdf,
+    "Der Auftraggeber / Eigentümer wurde ausdrücklich darauf hingewiesen, dass bei Austausch von mehr als einem Drittel der Fensterflächen ein Lüftungskonzept nach DIN 1946-6 erforderlich ist. Die Erstellung eines solchen Lüftungskonzepts ist nur Bestandteil des Auftrags, wenn sie gesondert schriftlich vereinbart und beauftragt wurde.",
+    y
+  );
+  y = addParagraph(pdf,
+    "Wird kein Lüftungskonzept beauftragt oder vorgelegt, erfolgt die Fenstermontage auf Grundlage der beauftragten Fensterleistung. Die Verantwortung für die Beauftragung, Bereitstellung und Umsetzung eines erforderlichen Lüftungskonzepts verbleibt beim Auftraggeber / Eigentümer, soweit keine abweichende schriftliche Vereinbarung getroffen wurde.",
+    y
+  );
+
+  y = addTitle(pdf, "4. Manuelles Lüftungs- und Heizverhalten", y);
+  y = addParagraph(pdf,
+    "Sofern kein geeignetes Lüftungssystem vorhanden ist, muss der Auftraggeber / Nutzer durch angepasstes Lüftungs- und Heizverhalten aktiv zur Feuchteabfuhr beitragen. Dazu gehört insbesondere regelmäßiges Stoßlüften, ausreichendes Heizen und die Kontrolle erhöhter Raumluftfeuchtigkeit.",
+    y
+  );
+  y = addParagraph(pdf,
+    "Eine pauschale Lüftungsempfehlung ersetzt keine objektbezogene Berechnung. Häufig wird mehrmals tägliches Stoßlüften für mehrere Minuten erforderlich sein; die konkrete Erforderlichkeit hängt jedoch von Gebäude, Nutzung und Witterung ab.",
+    y
+  );
+
+  y = addTitle(pdf, "5. Abgrenzung der Verantwortung", y);
+  y = addParagraph(pdf,
+    "Der Auftragnehmer haftet weiterhin für die ordnungsgemäße Ausführung der von ihm beauftragten Leistungen. Für Schäden, die ausschließlich auf ein nicht beauftragtes, nicht vorgelegtes oder nicht umgesetztes Lüftungskonzept sowie auf unzureichendes Lüftungs- oder Heizverhalten des Nutzers zurückzuführen sind, übernimmt der Auftragnehmer keine Verantwortung.",
+    y
+  );
+
+  y = addTitle(pdf, "6. Bestätigung des Auftraggebers / Eigentümers", y);
+  y = addCheckboxLine(pdf, true, "Ich bestätige, dass ich über Feuchteschutz, Schimmelgefahr und die Auswirkungen dichter neuer Fenster informiert wurde.", y);
+  y = addCheckboxLine(pdf, true, "Ich wurde darauf hingewiesen, dass bei Austausch von mehr als 1/3 der Fensterflächen ein Lüftungskonzept nach DIN 1946-6 erforderlich ist.", y);
+  y = addCheckboxLine(pdf, true, "Mir ist bekannt, dass dieses Hinweisprotokoll kein vollständiges Lüftungskonzept und keine Fachplanung ersetzt.", y);
+
+  y += 3;
+  y = addParagraph(pdf, "Erklärung zum Lüftungskonzept:", y, { bold: true });
+  y = addParagraph(pdf, konzept, y);
+
+  if (bemerkungen) {
+    y = addParagraph(pdf, "Bemerkungen:", y, { bold: true });
+    y = addParagraph(pdf, bemerkungen, y);
+  }
+
+  y = addPageIfNeeded(pdf, y, 70);
+  y = addTitle(pdf, "7. Unterschriften", y);
+
+  const signatureImage = signaturePad.toDataURL("image/png");
+  const contractorSignature = await imageToDataURL(AUFTRAGNEHMER_SIGNATURE_SRC);
+
+  pdf.setDrawColor(190);
+  pdf.rect(18, y, 80, 36);
+  pdf.rect(112, y, 80, 36);
+
+  pdf.setFont("helvetica", "bold");
+  pdf.setFontSize(9);
+  pdf.text("Auftragnehmer", 20, y + 6);
+  pdf.text("Auftraggeber / Eigentümer", 114, y + 6);
+
+  if (contractorSignature) {
+    pdf.addImage(contractorSignature, "JPEG", 22, y + 10, 68, 20);
+  } else {
+    pdf.setFont("helvetica", "normal");
+    pdf.setFontSize(8);
+    pdf.text("Signaturbild nicht gefunden", 22, y + 20);
+  }
+
+  pdf.addImage(signatureImage, "PNG", 116, y + 9, 72, 22);
+
+  y += 44;
+
+  pdf.setFont("helvetica", "normal");
+  pdf.setFontSize(9);
+  pdf.text(cleanPdfText(firma), 18, y);
+  pdf.text(cleanPdfText(kunde), 112, y);
+
+  y += 10;
+  pdf.line(18, y, 98, y);
+  pdf.line(112, y, 192, y);
+
+  pdf.setFontSize(8);
+  pdf.text("Unterschrift Auftragnehmer", 18, y + 5);
+  pdf.text("Unterschrift Auftraggeber / Eigentümer", 112, y + 5);
+
+  pdf.setFontSize(8);
+  pdf.setTextColor(110);
+  pdf.text(
+    "Dieses Dokument wurde lokal im Browser erstellt. Vorlage ohne individuelle Rechtsberatung und ohne objektbezogene Fachplanung.",
+    18,
+    286
+  );
+
+  const fileDate = datum.replaceAll("-", "");
+  const fileCustomer = safeFileName(kunde);
+
+  pdf.save(`Hinweisprotokoll_Feuchteschutz_Lueftung_${fileCustomer}_${fileDate}.pdf`);
 }
 </script>
 
