@@ -4,7 +4,7 @@ const VERSION = '28.10.2026';
 const NOTICE = 'Dichtere Fenster können den bisherigen Luftwechsel verringern. Bei unzureichender Feuchteabfuhr drohen Tauwasser und Schimmel, besonders an kalten Bauteilen. Angepasstes Heizen und Lüften bleibt wichtig; manuelles Fensteröffnen ersetzt keine erforderliche nutzerunabhängige Feuchteschutzlüftung.';
 const RIGHTS = 'Dieses Protokoll dokumentiert Hinweise und den Klärungsstand. Es ersetzt kein erforderliches Lüftungskonzept und keine Fachplanung. Gesetzliche Rechte sowie die Verantwortung für die geschuldeten Leistungen bleiben unberührt.';
 const SCOPE = 'Lüftungskonzept und zusätzliche Lüftungstechnik gehören nur zum Auftrag, soweit vereinbart oder nach dem konkreten Vertragsinhalt geschuldet. Erforderliche Prüfungen, konkrete Warnungen und technische Klärungen bleiben Aufgabe des Betriebs; siehe Ziffer 11 der vereinbarten AGB.';
-const EXTENTS = {small:'Bis einschließlich 1/3 der vorhandenen Fenster',large:'Mehr als 1/3 der vorhandenen Fenster / Neubau',unclear:'Umfang unklar / weitere relevante Änderungen'};
+const EXTENTS = {small:'Bis einschließlich 1/3 der vorhandenen Fenster',large:'Mehr als 1/3 der vorhandenen Fenster / Neubau',funded:'BEG-geförderte Maßnahme mit erhöhter Luftdichtheit',unclear:'Umfang unklar / weitere relevante Änderungen'};
 const RESULTS = {
   small:{title:'Kein weiterer Klärungsbedarf erkennbar',text:'Auf Grundlage der unten dokumentierten fachlichen Einschätzung ist derzeit kein zusätzlicher Klärungsbedarf erkennbar. Dies ist kein rechnerischer Lüftungsnachweis. Bei neuen Erkenntnissen ist erneut zu prüfen.',label:'Prüfgrundlage / kurze Begründung',placeholder:'Z. B. 1 von 8 Fenstern; frühere Etappen, Lüftung und Anschlüsse betrachtet. Tatsächliche Feststellungen kurz benennen.'},
   planned:{title:'Planung / Lüftungskonzept liegt vor',text:'Die benannte Planung ist verfügbar. Eignung für diese Maßnahme, erforderliche Maßnahmen und deren Umsetzung sind vor Ausführung abzugleichen; offene Punkte im Befund benennen.',label:'Ergebnis / erforderliche Maßnahmen / Umsetzungsstand',placeholder:'Z. B. Konzept passt zum Fenstertausch; vorgesehene Außenluftdurchlässe werden gemäß Planung eingebaut. Offene Punkte benennen.'},
@@ -54,8 +54,8 @@ function updateResult() {
   $('basis').required=!!result;
   $('planFields').hidden=s!=='planned'; $('plan').required=s==='planned';
   $('openFields').hidden=s!=='open'; $('next').required=s==='open';
-  $('statement').textContent=result?.text || (extent==='large' ? 'Bei diesem Umfang ist ein Lüftungskonzept regelmäßig erforderlich. Vorhandene Planung zuordnen oder Klärungsbedarf dokumentieren.' : extent==='unclear' ? 'Umfang oder Auswirkungen zunächst klären. Vorhandene geeignete Planung zuordnen oder offene Bedenken festhalten.' : 'Keine Vorbelegung: Ergebnis erst nach fachlicher Einschätzung auswählen. Dieses Formular berechnet keinen Luftwechsel.');
-  $('statement').classList.toggle('warn',s==='open'||(!s && ['large','unclear'].includes(extent)));
+  $('statement').textContent=result?.text || (extent==='large' ? 'Typischer Anlass für ein Lüftungskonzept nach DIN 1946-6. Die Drittelgrenze ist keine abschließende Prüfgrenze. Planung zuordnen oder Klärungsbedarf dokumentieren.' : extent==='funded' ? 'Bei BEG-geförderter Sanierung mit erhöhter Luftdichtheit ist ein Lüftungskonzept-Nachweis gefordert; die Förderanforderung nennt keine Drittel-Ausnahme. Mit dem Energieeffizienz-Experten klären; Planung zuordnen oder offenen Bedarf dokumentieren.' : extent==='unclear' ? 'Umfang oder Auswirkungen zunächst klären. Vorhandene geeignete Planung zuordnen oder offene Bedenken festhalten.' : 'Keine Vorbelegung: Ergebnis erst nach fachlicher Einschätzung auswählen. Dieses Formular berechnet keinen Luftwechsel.');
+  $('statement').classList.toggle('warn',s==='open'||(!s && ['large','funded','unclear'].includes(extent)));
   if(result) { $('basisLabel').textContent=result.label; $('basis').placeholder=result.placeholder; }
   $('signBlock').hidden=$('ohne').checked;
   $('noSignFields').hidden=!$('ohne').checked; $('grund').required=$('ohne').checked;
@@ -124,6 +124,7 @@ async function buildPDF(data,signature,signTime,exportedAt) {
   header();
   field('Kunde / Auftraggeber',data.customer);field('Objekt / Nutzungseinheit',data.object);field('Maßnahme / Auftrag',data.order);
   text('Umfang: '+EXTENTS[data.extent],{size:8,leading:3.8,after:3});
+  if(data.extent==='funded')text('Förderhinweis: Lüftungskonzept-Nachweis nach den maßgeblichen BEG-Förderbedingungen mit dem Energieeffizienz-Experten klären. Die Anforderung nennt keine Drittel-Ausnahme.',{size:8,leading:3.8,after:3});
   heading(RESULTS[data.status].title.toUpperCase());text(RESULTS[data.status].text,{size:8.5,leading:4,after:2});
   field(RESULTS[data.status].label,data.basis);
   if(data.plan)field('Zugeordnete Planung / Dokument',data.plan);
