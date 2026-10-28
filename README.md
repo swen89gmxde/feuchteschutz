@@ -1,0 +1,41 @@
+# Feuchteschutz & Lüftung – Sichtwerk - Neubauer
+
+Formularstand 28.10.2026, abgeglichen mit den AGB vom 27.10.2026 (insbesondere Ziffer 11). Statische Anwendung für GitHub Pages. Keine Registrierung und kein Backend. Eingaben bleiben im Arbeitsspeicher des Tabs; kein automatischer Versand, kein localStorage, keine Übertragung von Projektdaten an GitHub. Die Bibliotheken für Unterschrift und PDF werden von jsDelivr geladen.
+
+## Im Alltag
+
+Beim Aufmaß bzw. vor der betroffenen Ausführung nutzen. Kunde, Objekt/Wohnung und Maßnahme erfassen, Umfang einordnen, tatsächlichen fachlichen Stand auswählen und kurz begründen. Datum, Öffnungszeit, Unterzeichnungszeit und Auftragnehmer werden automatisch eingesetzt; der Unterzeichnungsort wird aus der Objektadresse übernommen und kann abweichend angegeben werden. Die Geräteuhr ist kein vertrauenswürdiger externer oder qualifizierter Zeitstempel.
+
+Das Formular ist ein Hinweis- und Prüfvermerk. Es berechnet keinen Luftwechsel und erteilt keine technische oder rechtliche Freigabe. Keine vorangekreuzten Tatsachenbestätigungen, kein pauschaler Haftungsausschluss und keine Beweislastumkehr. Die freiwillige Kundenunterschrift bezieht sich nur auf den Empfang des Hinweises, nicht auf die Richtigkeit technischer Einschätzungen des Betriebs. Die gezeichnete elektronische Unterschrift ist keine qualifizierte elektronische Signatur; ein bestimmter gerichtlicher Beweiswert oder die Erfüllung gesetzlicher Schriftform wird damit nicht zugesichert. Eine Unterschrift ersetzt keine erforderliche fachliche Klärung. Bei Änderungen der dokumentierten Angaben wird eine bereits erfasste Kundenunterschrift gelöscht. Beim Drehen des Geräts bleiben Unterschrift und ihr ursprüngliches Exportbild erhalten.
+
+Bei offenem Klärungsbedarf konkrete Bedenken, mögliche Folgen und nächsten Schritt festhalten; betroffene Ausführung bis zur fachlichen Klärung und geeigneten Lösung zurückstellen. Auch wenn der Kunde Maßnahmen ablehnt, darf daraus nicht automatisch eine Freigabe abgeleitet werden. Vertragliche Änderungs-, Vergütungs- und Kündigungsfragen sind gesondert zu beurteilen.
+
+PDF selbst speichern und eine Kopie rechtzeitig dem Kunden geben. Den tatsächlichen Zugang gesondert nachweisen; das Drücken auf „PDF teilen“ belegt ihn nicht. Ohne Kundenunterschrift lässt sich ausdrücklich ein Betriebsvermerk erstellen; er bestätigt weder Empfang noch Einverständnis des Kunden. Dokumentierte Befunde durch Fotos, Planung und Korrespondenz in der Auftragsakte ergänzen.
+
+## Wann Konzept, wann Kurzvermerk?
+
+Für Sichtwerk wird ein kurzer dokumentierter Blick auf Lüftung/Feuchteschutz bei jedem Fenstertausch empfohlen; dies ist keine Behauptung einer gesetzlichen Pflicht zu genau diesem Formular bei jedem Auftrag. Reine Reparaturen ohne Veränderung der Dichtheit lösen das nicht pauschal aus.
+
+Die derzeit aktuelle DIN 1946-6:2019-12 erfasst Neubauten und lüftungstechnisch relevante Änderungen im Bestand. Ein typischer Anlass ist der Austausch von mehr als einem Drittel der vorhandenen Fenster in einer Nutzungseinheit. Maßstab ist die betroffene Wohnung bzw. Nutzungseinheit, nicht eine pauschale Fensterfläche in Quadratmetern über das ganze Gebäude. Frühere Austauschschritte und andere relevante Änderungen mitbetrachten. Unterhalb der Drittelgrenze besteht keine pauschale Haftungsbefreiung; erkennbare kritische Anschlüsse, Feuchteprobleme oder Wechselwirkungen mit Lüftung, Abluftgeräten und Feuerstätten erfordern konkrete Klärung. Das Formular trifft bewusst keine automatische Entwarnung durch eine Prozentrechnung.
+
+Die Auswahl „Kein weiterer Bedarf erkennbar“ ist nur für den eingeordneten Kleinfall möglich und verlangt eine tatsächliche Begründung. Bei größerem/unklarem Umfang muss vorhandene geeignete Planung zugeordnet oder offener Klärungsbedarf dokumentiert werden. Ein bereits vorhandenes Konzept ist auf Eignung und Umsetzung im konkreten Auftrag abzugleichen.
+
+## Grundlagen und Grenzen
+
+- DIN Media: DIN 1946-6:2019-12, Status aktuell: https://www.dinmedia.de/de/norm/din-1946-6/314483915
+- DIN-Ausschuss, FAQ mit Aktualisierung 29.07.2026: https://www.din.de/de/mitwirken/normenausschuesse/nhrs/faqs-zur-din-1946-6-1283496
+- ift Rosenheim, Planung, Lüftungskonzept und Hinweispflichten: https://www.ift-rosenheim.de/aktuelle-tipps-zum-fenstertausch
+- DIN, rechtliche Bedeutung von Normen: https://www.din.de/de/ueber-normen-und-standards/normen-und-recht/rechtsverbindlichkeit-durch-normen
+- § 633 BGB, geschuldete mangelfreie Werkleistung: https://www.gesetze-im-internet.de/bgb/__633.html
+- § 307 BGB, Grenzen vorformulierter Vertragsbedingungen: https://www.gesetze-im-internet.de/bgb/__307.html
+- § 309 Nr. 12 BGB, Beweislast/Tatsachenbestätigungen: https://www.gesetze-im-internet.de/bgb/__309.html
+
+DIN-Normen sind keine Gesetze. Ihre Bedeutung folgt unter anderem aus vertraglicher Einbeziehung und ihrer Rolle bei der Bewertung fachgerechter Leistungen. Nicht jede Norm ist automatisch in jedem Einzelfall eine anerkannte Regel der Technik. Öffentlich-rechtliche Vorgaben, geschuldeter Erfolg sowie konkrete Prüf-, Hinweis- und Warnpflichten sind unabhängig vom Formular zu beachten. Umfang der Planungsleistung und Vergütung müssen im jeweiligen Vertrag geklärt werden. Die Formulierungen garantieren keine Haftungsfreiheit; eine anwaltliche Prüfung der Einzelfallgestaltung wird damit nicht ersetzt.
+
+## Bei AGB-Änderungen mitprüfen
+
+Bei jeder Änderung der AGB insbesondere die Konstanten NOTICE, RIGHTS, SCOPE und RESULTS in app.js, den Hilfebereich in index.html sowie den PDF-Text abgleichen. Ebenso die Lexware-Artikeltexte, Angebotseinleitungen und Nachbemerkungen sowie das Bauabnahmeformular berücksichtigen. Das ist eine Arbeitsregel, keine in dieser statischen Seite laufende automatische Überwachung.
+
+## Technisch
+
+Keine personenbezogenen Testdaten veröffentlichen. Die vorhandene Auftragnehmerunterschrift wurde beibehalten und im PDF als hinterlegte Unterschrift bezeichnet. Sie ist auf der bereits öffentlichen Seite einsehbar. jsPDF wurde von 2.5.1 auf 4.2.1 aktualisiert; Signature Pad ist weiterhin auf 4.1.7 festgelegt. Der Normalfall ist für eine A4-Seite ausgelegt; lange Befunde werden vollständig auf weitere Seiten umbrochen.
