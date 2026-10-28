@@ -182,7 +182,7 @@ async function exportPDF(share=false) {
   } catch(error){message(error.message||'PDF konnte nicht erstellt werden.');}
   finally{lock(false);}
 }
-function resetForm(){if((value('kunde')||value('objekt')||value('auftrag')||sigImage)&&!confirm('Neuen Vorgang beginnen und aktuelle Angaben löschen?'))return;$('form').reset();manualDate=false;activeStatus='';basisByStatus={};openedAt=new Date();$('datum').value=dateValue(openedAt);clearSignature();clearDownload();lastExport='';message('');updateAuto();updateResult();resizeSignature();}
+function resetForm(){if((value('kunde')||value('objekt')||value('auftrag')||sigImage)&&!confirm('Neuen Vorgang beginnen und aktuelle Angaben löschen?'))return;HTMLFormElement.prototype.reset.call($('form'));$('extras').open=false;manualDate=false;activeStatus='';basisByStatus={};openedAt=new Date();$('datum').value=dateValue(openedAt);clearSignature();clearDownload();lastExport='';message('');updateAuto();updateResult();resizeSignature();}
 window.addEventListener('DOMContentLoaded',()=>{
   $('notice').textContent=NOTICE;$('rights').textContent=RIGHTS;$('scope').textContent=SCOPE;
   $('datum').value=dateValue(openedAt);updateAuto();updateResult();
